@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/removeMedicineView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:text="@string/removeMedicineView"
+        android:textColor="#131313"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="35dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/denyButton"
+            android:layout_height="60dp"
+            android:layout_width="120dp"
+            android:backgroundTint="#e7e7ea"
+            android:text="@string/denyButton"
+            android:textAllCaps="false"
+            android:textColor="#747476"
+            />
+
+        <Button
+            android:id="@+id/confirmButton"
+            android:layout_height="60dp"
+            android:layout_width="120dp"
+            android:layout_marginLeft="25dp"
+            android:backgroundTint="@color/colorAccent"
+            android:text="@string/confirmButton"
+            android:textAllCaps="false"
+            android:textColor="@color/common_google_signin_btn_text_dark_default" />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        android:id="@+id/resultsImage"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="14dp" />
+
+
+    <Button
+        android:id="@+id/denyButton"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:layout_below="@+id/resultsImage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:backgroundTint="#e7e7ea"
+        android:text="@string/denyButton"
+        android:textAllCaps="false"
+        android:textColor="#747476" />
+</RelativeLayout>

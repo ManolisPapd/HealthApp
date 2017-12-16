@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "227470589327",
+    "firebase_url": "https://healthapp-f2bba.firebaseio.com",
+    "project_id": "healthapp-f2bba",
+    "storage_bucket": "healthapp-f2bba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:227470589327:android:d04d592d237fa2d7",
+        "android_client_info": {
+          "package_name": "com.emmanouilpapadimitrou.healthapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "227470589327-tjmi1itcqtnps2ng9li331qhd07m10up.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaeS7TZtLF854ZrDDd_KDG3c-CNHMbDCU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

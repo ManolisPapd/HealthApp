@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/addMedicineView"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="5dp"
+        android:text="@string/addMedicineView" />
+
+    <EditText
+        android:id="@+id/medicineInputName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="@string/medicineInputName"
+        android:layout_marginTop="25dp"/>
+
+    <EditText
+        android:id="@+id/doseInputName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_marginTop="15dp"
+        android:inputType="textPersonName"
+        android:hint="@string/doseInputName" />
+
+    <EditText
+        android:id="@+id/frequencyInputName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_marginTop="15dp"
+        android:inputType="textPersonName"
+        android:hint="@string/frequencyInputName" />
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="35dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/denyButton"
+            android:layout_height="60dp"
+            android:layout_width="120dp"
+            android:backgroundTint="#e7e7ea"
+            android:text="@string/denyButton"
+            android:textAllCaps="false"
+            android:textColor="#747476"
+            />
+
+        <Button
+            android:id="@+id/inputButton"
+            android:layout_height="60dp"
+            android:layout_width="120dp"
+            android:layout_marginLeft="25dp"
+            android:backgroundTint="#7dec73"
+            android:text="@string/inputButton"
+            android:textAllCaps="false"
+            android:textColor="@color/common_google_signin_btn_text_dark_default" />
+
+
+    </LinearLayout>
+</LinearLayout>

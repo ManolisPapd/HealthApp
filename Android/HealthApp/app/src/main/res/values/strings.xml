@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">HealthApp</string>
+    <string name="buttonLogin">Συνδεση</string>
+    <string name="email">Email</string>
+    <string name="password">Κωδικός</string>
+    <string name="error_weak_password">Αδύναμος Κωδικός</string>
+    <string name="error_data">Λάθος email ή κωδικός</string>
+    <string name="title_activity_nav_drawer">NavDrawer</string>
+    <string name="nav_patients">Ασθενείς</string>
+    <string name="nav_profile">Προφίλ</string>
+    <string name="nav_logout">Αποσύνδεση</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="drawer_title">HealthApp</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_patients">PatientsActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_3">Tab 3</string>
+    <string name="nameTextView">Όνομα</string>
+    <string name="surnameTextView">Επώνυμο</string>
+    <string name="fnameTextView">Πατρώνυμο</string>
+    <string name="genderTextView">Φύλο</string>
+    <string name="birthdateTextView">Η.Μ. Γέννησης</string>
+    <string name="entrydateTextView">Εισαγωγή</string>
+    <string name="ethnicityTextView">Εθνικότητα</string>
+    <string name="townTextView">Πόλη Διαμονής</string>
+    <string name="addressTextView">Διεύθυνση</string>
+    <string name="tkTextView">Τ.Κ.</string>
+    <string name="telephone1TextView">Τηλέφωνο 1</string>
+    <string name="telephone2TextView">Τηλέφωνο 2</string>
+    <string name="addmedButton">Εισαγωγη Φαρμακος</string>
+    <string name="medicineNameTextView">Όνομα</string>
+    <string name="doseNameTextView">Δοσολογία</string>
+    <string name="frequencyNameTextView">Συχνότητα</string>
+    <string name="doctorNameTextView">Γιατρός</string>
+    <string name="dateNameTextView">Δόθηκε στις</string>
+    <string name="addMedicineView">Εισαγωγή Φάρμακος</string>
+    <string name="medicineInputName">Όνομα Φάρμακος</string>
+    <string name="doseInputName">Δοσολογία</string>
+    <string name="frequencyInputName">Συχνότητα</string>
+    <string name="inputButton">Εισαγωγή</string>
+    <string name="removeMedicineView">Διαγραφή φάρμακος;\nΔεν μπορεί να αναιρεθεί!</string>
+    <string name="confirmButton">Διαγραφή</string>
+    <string name="denyButton">Πίσω</string>
+    <string name="examinationNameTextView">Όνομα</string>
+    <string name="dateExaminationNameTextView">Ημερομηνία</string>
+    <string name="addExaminationView">Εισαγωγή Εξέτασης</string>
+    <string name="examinationInputName">Όνομα Εξέτασης</string>
+    <string name="datePickerView">Επιλέξτε Ημερομηνία Εξέτασης</string>
+    <string name="addNoteView">Εισαγωγή Σημείωσης</string>
+    <string name="noteInputName">Κείμενο Σημείωσης</string>
+
+
+</resources>
