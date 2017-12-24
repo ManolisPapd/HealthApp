@@ -1,31 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal">
 
-    <LinearLayout
+    <TableRow
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="match_parent" >
 
-        <TextView
-            android:id="@+id/text1"
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/rectangle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/rectangle" />
+
+        <ImageView
+            android:id="@+id/line"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/line" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:orientation="horizontal">
 
-            android:paddingLeft="5dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="18sp" />
+            <TextView
+                android:id="@+id/text1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:fontFamily="arial"
+                android:padding="20dp"
+                android:paddingLeft="5dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="21sp" />
 
-        <TextView
-            android:id="@+id/text2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:visibility="invisible" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/text2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="invisible" />
+        </LinearLayout>
+
+    </TableRow>
+
+
+
+
 
 
 </LinearLayout>

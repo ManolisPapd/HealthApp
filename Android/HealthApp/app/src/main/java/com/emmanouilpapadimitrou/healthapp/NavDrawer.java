@@ -15,7 +15,7 @@ import android.view.MenuItem;
 
 import com.emmanouilpapadimitrou.healthapp.Activities.MainActivity;
 import com.emmanouilpapadimitrou.healthapp.Fragments.PatientsFragment;
-import com.emmanouilpapadimitrou.healthapp.Fragments.ProfileFragment;
+
 import com.firebase.client.Firebase;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,10 +35,6 @@ public class NavDrawer extends AppCompatActivity
 
         //Ορισμός της βάσης με το αντικείμενο
         Firebase.setAndroidContext(this);
-        //Newer version of Firebase
-        if(!FirebaseApp.getApps(this).isEmpty()) {
-            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        }
 
         //Μεταβλητή που μας δίνει τα στοιχεία του συνδεδεμένου χρήστη
         firebaseAuth = FirebaseAuth.getInstance();
@@ -115,13 +111,10 @@ public class NavDrawer extends AppCompatActivity
             case R.id.nav_patients:
                 fragment = new PatientsFragment();
                 break;
-            //Οθόνη προφίλ
-            case R.id.nav_profile:
-                fragment = new ProfileFragment();
-                break;
             //Οθόνη αποσύνδεσης
             case R.id.nav_logout:
-                firebaseAuth.signOut();
+                //firebaseAuth.signOut();
+                FirebaseAuth.getInstance().signOut();
                 Intent loginIntent = new Intent(this,MainActivity.class);
                 startActivity(loginIntent);
                 finish();

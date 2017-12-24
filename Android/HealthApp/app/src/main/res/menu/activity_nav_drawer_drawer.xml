@@ -8,10 +8,6 @@
             android:id="@+id/nav_patients"
             android:icon="@drawable/patient"
             android:title="@string/nav_patients" />
-        <item
-            android:id="@+id/nav_profile"
-            android:icon="@drawable/avatar"
-            android:title="@string/nav_profile" />
 
         <item
             android:id="@+id/nav_logout"

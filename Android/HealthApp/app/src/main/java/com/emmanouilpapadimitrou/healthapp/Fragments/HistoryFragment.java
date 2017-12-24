@@ -1,5 +1,6 @@
 package com.emmanouilpapadimitrou.healthapp.Fragments;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -8,7 +9,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.emmanouilpapadimitrou.healthapp.Activities.PatientsActivity;
 import com.emmanouilpapadimitrou.healthapp.Adapters.ExaminationsAdapter;
@@ -82,8 +86,8 @@ public class HistoryFragment extends Fragment {
                         database.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot1) {
-                                for(DataSnapshot doctorTemp : dataSnapshot1.getChildren()){
-                                    if(docID.equals(String.valueOf(doctorTemp.getKey()))){
+                                for(DataSnapshot userTemp : dataSnapshot1.getChildren()){
+                                    if(docID.equals(String.valueOf(userTemp.getKey()))){
                                         h.setId(String.valueOf(history.getKey()));
                                         for(DataSnapshot typeTempID : history.child("type").getChildren()){
                                             h.setType(String.valueOf(typeTempID.getKey()));
@@ -93,7 +97,15 @@ public class HistoryFragment extends Fragment {
                                             h.setTypeId(String.valueOf(typeTempID.getValue()));
                                         }
                                         h.setDate(String.valueOf( history.child("date").getValue()));
-                                        h.setDoctor(String.valueOf(doctorTemp.child("name").getValue())+" " + String.valueOf(doctorTemp.child("surname").getValue()));
+
+
+                                        if(String.valueOf(userTemp.child("type").getValue()).equals("doctor")){
+                                            h.setDoctor("Δρ. "+ String.valueOf(userTemp.child("name").getValue())+" " + String.valueOf(userTemp.child("surname").getValue()));
+                                        }
+                                        else{
+                                            h.setDoctor(String.valueOf(userTemp.child("name").getValue())+" " + String.valueOf(userTemp.child("surname").getValue()));
+                                        }
+                                        
                                         h.setCondition(String.valueOf( history.child("condition").getValue()));
 
                                         for(DataSnapshot patientTempID : history.child("patients").getChildren()){
@@ -138,6 +150,61 @@ public class HistoryFragment extends Fragment {
         });
 
 
+
+        //Προβολή λεπτομερειών
+        historyList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                final History historySelected = (History) historyList.getItemAtPosition(position);
+
+                //Προβολή παραθύρου για επιβεβαίωση διαγραφής φαρμάκου
+                final AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
+                View mView = getLayoutInflater().inflate(R.layout.view_history_details,null);
+                mBuilder.setView(mView);
+                final AlertDialog dialog = mBuilder.create();
+
+                //textview που θα προβληθούν οι λεπτομέρειες
+                final TextView detailsView = (TextView) mView.findViewById(R.id.detailsView);
+
+                //Κουμπιά
+                Button denyButton = (Button) mView.findViewById(R.id.denyButton);
+
+                //Παίρνουμε τις λεπτομέρειες του επιλεγμένου ιστορικού
+                database.child("history").addListenerForSingleValueEvent(new ValueEventListener() {
+                   @Override
+                   public void onDataChange(DataSnapshot dataSnapshot) {
+                       for(final DataSnapshot history : dataSnapshot.getChildren()){
+
+                           if(history.getKey().equals(historySelected.getId())){
+                               detailsView.setText(String.valueOf(history.child("details").getValue()));
+                           }
+
+
+                       }
+                   }
+
+                   @Override
+                   public void onCancelled(FirebaseError firebaseError) {
+
+                   }
+               });
+
+
+                        //Κουμπί για πίσω
+                        denyButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                            }
+                        });
+
+
+
+
+                dialog.show();
+                return false;
+            }
+        });
 
         return view;
     }

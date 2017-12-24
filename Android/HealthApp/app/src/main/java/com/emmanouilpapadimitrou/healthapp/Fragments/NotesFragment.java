@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,7 +94,14 @@ public class NotesFragment extends Fragment {
                                         n.setId(String.valueOf(note.getKey()));
                                         n.setInfo(String.valueOf( note.child("info").getValue()));
                                         n.setDate(String.valueOf( note.child("date").getValue()));
-                                        n.setUser(String.valueOf(userTemp.child("name").getValue())+" " + String.valueOf(userTemp.child("surname").getValue()));
+
+                                        if(String.valueOf(userTemp.child("type").getValue()).equals("doctor")){
+                                            n.setUser("Δρ. " +String.valueOf(userTemp.child("name").getValue())+" " + String.valueOf(userTemp.child("surname").getValue()));
+                                        }
+                                        else{
+                                            n.setUser(String.valueOf(userTemp.child("name").getValue())+" " + String.valueOf(userTemp.child("surname").getValue()));
+                                        }
+
 
 
                                         for(DataSnapshot patientTempID : note.child("patients").getChildren()){
@@ -286,10 +294,11 @@ public class NotesFragment extends Fragment {
 
                                                    History newHistory = new History(newStringHistoryId,
                                                            date,
-                                                           "examinations",
+                                                           "notes",
                                                            newNote.getId(),
-                                                           currentUser.getName() +" " + currentUser.getSurname(),
-                                                           "create"
+                                                           currentUser.getName() +"\n" + currentUser.getSurname(),
+                                                           "create",
+                                                           newNote.getInfo()
                                                    );
 
 
@@ -397,6 +406,7 @@ public class NotesFragment extends Fragment {
                         database.child("history").orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
+                                Log.d("TEST","mpike");
                                 for(final DataSnapshot histId : dataSnapshot.getChildren()) {
                                     String currentHistId = histId.getKey();
                                     currentHistId = currentHistId.substring(currentHistId.length() - 11);
@@ -447,10 +457,11 @@ public class NotesFragment extends Fragment {
 
                                     History newHistory = new History(newStringHistoryId,
                                             date,
-                                            "examinations",
+                                            "notes",
                                             noteSelected.getId(),
                                             currentUser.getName() +" " + currentUser.getSurname(),
-                                            "delete"
+                                            "delete",
+                                            noteSelected.getInfo()
                                     );
 
 

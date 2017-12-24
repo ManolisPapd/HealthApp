@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 
 import com.emmanouilpapadimitrou.healthapp.Adapters.SectionsPageAdapter;
 import com.emmanouilpapadimitrou.healthapp.Fragments.*;
@@ -13,6 +14,9 @@ import com.emmanouilpapadimitrou.healthapp.POJOs.Users;
 import com.emmanouilpapadimitrou.healthapp.R;
 import com.firebase.client.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class PatientsActivity extends AppCompatActivity {
 
@@ -90,6 +94,8 @@ public class PatientsActivity extends AppCompatActivity {
         setupViewPager(mViewPager);
 
     }
+
+
 
 
 

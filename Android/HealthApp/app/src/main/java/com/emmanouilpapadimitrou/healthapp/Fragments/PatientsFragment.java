@@ -97,7 +97,7 @@ public class PatientsFragment extends Fragment {
                     for(DataSnapshot patientChild : patient.child("users").getChildren()){
 
                         if(firebaseAuth.getCurrentUser().getUid().equals(String.valueOf( patientChild.getKey()))){
-                            patientInfoForList.put(p.getName()+" "+p.getSurname(),p.getId());
+                            patientInfoForList.put(p.getSurname() +" " + p.getName(),p.getId());
 
                         }
                     }

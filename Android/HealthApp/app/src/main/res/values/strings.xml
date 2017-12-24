@@ -52,5 +52,7 @@
     <string name="addNoteView">Εισαγωγή Σημείωσης</string>
     <string name="noteInputName">Κείμενο Σημείωσης</string>
 
+    <string name="message">Μήνυμα</string>
+
 
 </resources>

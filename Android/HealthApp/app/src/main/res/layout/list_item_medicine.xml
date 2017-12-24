@@ -20,11 +20,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingLeft="1dp"
                 android:ems="10"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="18sp"
-                android:text="@string/medicineNameTextView" />
+                android:paddingLeft="1dp"
+                android:text="@string/medicineNameTextView"
+                android:textColor="#595a5b"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/medicineTextView"
@@ -48,11 +48,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingLeft="1dp"
                 android:ems="10"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="18sp"
-                android:text="@string/doseNameTextView" />
+                android:paddingLeft="1dp"
+                android:text="@string/doseNameTextView"
+                android:textColor="#595a5b"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/doseTextView"
@@ -77,11 +77,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingLeft="1dp"
                 android:ems="10"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="18sp"
-                android:text="@string/frequencyNameTextView" />
+                android:paddingLeft="1dp"
+                android:text="@string/frequencyNameTextView"
+                android:textColor="#595a5b"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/frequencyTextView"
@@ -106,11 +106,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingLeft="1dp"
                 android:ems="10"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="18sp"
-                android:text="@string/doctorNameTextView" />
+                android:paddingLeft="1dp"
+                android:text="@string/doctorNameTextView"
+                android:textColor="#595a5b"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/doctorTextView"
@@ -135,20 +135,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingLeft="1dp"
                 android:ems="10"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="18sp"
-                android:text="@string/dateNameTextView" />
+                android:paddingLeft="1dp"
+                android:text="@string/dateNameTextView"
+                android:textColor="#595a5b"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/dateTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="monospace"
                 android:paddingLeft="5dp"
                 android:textColor="@color/colorPrimaryDark"
-                android:textSize="18sp" />
+                android:textSize="14sp"
+                android:textStyle="italic" />
 
 
         </LinearLayout>

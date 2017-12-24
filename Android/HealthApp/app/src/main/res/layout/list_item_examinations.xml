@@ -20,11 +20,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingLeft="1dp"
                 android:ems="10"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="18sp"
-                android:text="@string/examinationNameTextView" />
+                android:paddingLeft="1dp"
+                android:text="@string/examinationNameTextView"
+                android:textColor="#595a5b"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/examinationTextView"
@@ -48,20 +48,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingLeft="1dp"
                 android:ems="10"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="18sp"
-                android:text="@string/dateExaminationNameTextView" />
+                android:paddingLeft="1dp"
+                android:text="@string/dateExaminationNameTextView"
+                android:textColor="#595a5b"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/dateExaminationTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="monospace"
                 android:paddingLeft="5dp"
                 android:textColor="@color/colorPrimaryDark"
-                android:textSize="18sp" />
+                android:textSize="14sp"
+                android:textStyle="italic" />
 
 
         </LinearLayout>

@@ -29,6 +29,7 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.google.firebase:firebase-auth:11.0.2'
     compile 'com.google.firebase:firebase-database:11.0.2'
+    compile 'com.firebaseui:firebase-ui-database:0.4.4'
     compile 'com.firebase:firebase-client-android:2.5.0'
     //noinspection GradleCompatible
     compile 'com.android.support:design:25.4.0'
@@ -36,9 +37,9 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:4.1.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.1.1'
     compile 'com.firebaseui:firebase-ui-storage:0.6.0'
-
-
     testCompile 'junit:junit:4.12'
+    implementation 'com.android.support:recyclerview-v7:25.3.1'
+
 }
 
 

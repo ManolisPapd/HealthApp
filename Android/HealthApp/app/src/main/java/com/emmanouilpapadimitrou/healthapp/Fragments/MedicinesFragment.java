@@ -44,6 +44,7 @@ public class MedicinesFragment extends Fragment {
     private FloatingActionButton addMedicineBtn;
     private Users currentUser;
     private DatabaseReference referenceDB;
+    private Patient patient;
 
 
 
@@ -74,7 +75,7 @@ public class MedicinesFragment extends Fragment {
         medicinesList = (ListView) view.findViewById(R.id.medicinesList);
 
         //Παίρνουμε τον επιλεγμένο χρήστη με όλα του τα στοιχεία
-        final Patient patient = ((PatientsActivity)getActivity()).getCurrentPatient();
+        patient = ((PatientsActivity)getActivity()).getCurrentPatient();
 
         //Παίρνουμε όλα τα φάρμακα από την βάση
         database.child("medicines").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -97,7 +98,7 @@ public class MedicinesFragment extends Fragment {
                                         m.setDate(String.valueOf( medicine.child("date").getValue()));
                                         m.setDose(String.valueOf( medicine.child("dose").getValue()));
                                         m.setFrequency(String.valueOf( medicine.child("frequency").getValue()));
-                                        m.setDoctor(String.valueOf(doctorTemp.child("name").getValue())+" " + String.valueOf(doctorTemp.child("surname").getValue()));
+                                        m.setDoctor("Δρ. " + String.valueOf(doctorTemp.child("name").getValue())+" " + String.valueOf(doctorTemp.child("surname").getValue()));
 
 
 
@@ -146,219 +147,224 @@ public class MedicinesFragment extends Fragment {
         addMedicineBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //Το κουμπί πατήθηκε
-                final AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
-                View mView = getLayoutInflater().inflate(R.layout.medicine_dialog,null);
-                mBuilder.setView(mView);
-                final AlertDialog dialog = mBuilder.create();
-                final EditText medicineInputName = (EditText) mView.findViewById(R.id.medicineInputName);
-                final EditText doseInputName = (EditText) mView.findViewById(R.id.doseInputName);
-                final EditText frequencyInputName = (EditText) mView.findViewById(R.id.frequencyInputName);
+                if (currentUser.getType().equals("doctor")) {
+                    final AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
+                    View mView = getLayoutInflater().inflate(R.layout.medicine_dialog, null);
+                    mBuilder.setView(mView);
+                    final AlertDialog dialog = mBuilder.create();
+                    final EditText medicineInputName = (EditText) mView.findViewById(R.id.medicineInputName);
+                    final EditText doseInputName = (EditText) mView.findViewById(R.id.doseInputName);
+                    final EditText frequencyInputName = (EditText) mView.findViewById(R.id.frequencyInputName);
 
-                //Κουμπιά
-                Button inputButton = (Button) mView.findViewById(R.id.inputButton);
-                Button denyButton = (Button) mView.findViewById(R.id.denyButton);
+                    //Κουμπιά
+                    Button inputButton = (Button) mView.findViewById(R.id.inputButton);
+                    Button denyButton = (Button) mView.findViewById(R.id.denyButton);
 
-                //Κουμπί για πίσω
-                denyButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
+                    //Κουμπί για πίσω
+                    denyButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
 
-                inputButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //Ελέγχουμε αν είναι άδεια τα πεδία
-                        if(!medicineInputName.getText().toString().isEmpty()
-                                && !doseInputName.getText().toString().isEmpty()
-                                && !frequencyInputName.getText().toString().isEmpty()){
-
-
-                            //Βρίσκουμε πόσα φάρμακα υπάρχουν στην βάση ώστε να φτιάξουμε το νέο id για το φάρμακο
-                            database.child("medicines").orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    for(final DataSnapshot medTmp : dataSnapshot.getChildren()){
-                                        String currentMedId = medTmp.getKey();
-                                        currentMedId = currentMedId.substring(currentMedId.length() - 6);
-                                        int newIntMedicineId = Integer.parseInt(currentMedId) + 1;
-
-                                        //Βάζουμε τα απαραίτητα μηδενικά ώστε να υπακούει στο format του id
-                                        String newStringMedicineId = String.valueOf(newIntMedicineId);
-
-                                        String zeroes = "";
-                                        switch(newStringMedicineId.length()){
-                                            case 1:
-                                                zeroes+="00000";
-                                                break;
-                                            case 2:
-                                                zeroes+="0000";
-                                                break;
-                                            case 3:
-                                                zeroes+="000";
-                                                break;
-                                            case 4:
-                                                zeroes+="00";
-                                                break;
-                                            case 5:
-                                                zeroes+="0";
-                                                break;
-                                        }
-
-                                        newStringMedicineId ="med"+ zeroes + newStringMedicineId;
+                    inputButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //Ελέγχουμε αν είναι άδεια τα πεδία
+                            if (!medicineInputName.getText().toString().isEmpty()
+                                    && !doseInputName.getText().toString().isEmpty()
+                                    && !frequencyInputName.getText().toString().isEmpty()) {
 
 
-                                        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-                                        String date = df.format(Calendar.getInstance().getTime());
+                                //Βρίσκουμε πόσα φάρμακα υπάρχουν στην βάση ώστε να φτιάξουμε το νέο id για το φάρμακο
+                                database.child("medicines").orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        for (final DataSnapshot medTmp : dataSnapshot.getChildren()) {
+                                            String currentMedId = medTmp.getKey();
+                                            currentMedId = currentMedId.substring(currentMedId.length() - 6);
+                                            int newIntMedicineId = Integer.parseInt(currentMedId) + 1;
 
-                                        final Medicine newMedicine = new Medicine(newStringMedicineId,
-                                                medicineInputName.getText().toString(),
-                                                currentUser.getName() +" " + currentUser.getSurname(),
-                                                date,
-                                                doseInputName.getText().toString(),
-                                                frequencyInputName.getText().toString()
-                                        );
+                                            //Βάζουμε τα απαραίτητα μηδενικά ώστε να υπακούει στο format του id
+                                            String newStringMedicineId = String.valueOf(newIntMedicineId);
 
-                                        //Βάζουμε τα στοιχεία του νέου φάρμακος στο πεδίο medicines
-                                        referenceDB.child("medicines")
-                                                .child(newMedicine.getId())
-                                                .setValue(newMedicine);
+                                            String zeroes = "";
+                                            switch (newStringMedicineId.length()) {
+                                                case 1:
+                                                    zeroes += "00000";
+                                                    break;
+                                                case 2:
+                                                    zeroes += "0000";
+                                                    break;
+                                                case 3:
+                                                    zeroes += "000";
+                                                    break;
+                                                case 4:
+                                                    zeroes += "00";
+                                                    break;
+                                                case 5:
+                                                    zeroes += "0";
+                                                    break;
+                                            }
 
-                                        referenceDB.child("medicines")
-                                                .child(newMedicine.getId())
-                                                .child("patients")
-                                                .child(patient.getId())
-                                                .setValue(true);
-
-                                        referenceDB.child("medicines")
-                                                .child(newMedicine.getId())
-                                                .child("users")
-                                                .child(userID)
-                                                .setValue(true);
+                                            newStringMedicineId = "med" + zeroes + newStringMedicineId;
 
 
-                                        //Ενημέρωση ιστορικού
-                                        //Δημιουργία id νέου ιστορικού
-                                        final String finalNewStringMedId = newStringMedicineId;
-                                        database.child("history").orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                                for(final DataSnapshot histId : dataSnapshot.getChildren()) {
-                                                    String currentHistId = histId.getKey();
-                                                    currentHistId = currentHistId.substring(currentHistId.length() - 11);
-                                                    int newIntHistoryId = Integer.parseInt(currentHistId) + 1;
+                                            DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+                                            String date = df.format(Calendar.getInstance().getTime());
 
-                                                    //Βάζουμε τα απαραίτητα μηδενικά ώστε να υπακούει στο format του id
-                                                    String newStringHistoryId = String.valueOf(newIntHistoryId);
 
-                                                    String zeroes = "";
-                                                    switch (newStringHistoryId.length()) {
-                                                        case 1:
-                                                            zeroes += "0000000000";
-                                                            break;
-                                                        case 2:
-                                                            zeroes += "000000000";
-                                                            break;
-                                                        case 3:
-                                                            zeroes += "00000000";
-                                                            break;
-                                                        case 4:
-                                                            zeroes += "0000000";
-                                                            break;
-                                                        case 5:
-                                                            zeroes += "000000";
-                                                            break;
-                                                        case 6:
-                                                            zeroes += "00000";
-                                                            break;
-                                                        case 7:
-                                                            zeroes += "0000";
-                                                            break;
-                                                        case 8:
-                                                            zeroes += "000";
-                                                            break;
-                                                        case 9:
-                                                            zeroes += "00";
-                                                            break;
-                                                        case 10:
-                                                            zeroes += "0";
-                                                            break;
+                                            final Medicine newMedicine = new Medicine(newStringMedicineId,
+                                                    medicineInputName.getText().toString(),
+                                                    "Δρ. " + currentUser.getName() + " " + currentUser.getSurname(),
+                                                    date,
+                                                    doseInputName.getText().toString(),
+                                                    frequencyInputName.getText().toString()
+                                            );
+
+                                            //Βάζουμε τα στοιχεία του νέου φάρμακος στο πεδίο medicines
+                                            referenceDB.child("medicines")
+                                                    .child(newMedicine.getId())
+                                                    .setValue(newMedicine);
+
+                                            referenceDB.child("medicines")
+                                                    .child(newMedicine.getId())
+                                                    .child("patients")
+                                                    .child(patient.getId())
+                                                    .setValue(true);
+
+                                            referenceDB.child("medicines")
+                                                    .child(newMedicine.getId())
+                                                    .child("users")
+                                                    .child(userID)
+                                                    .setValue(true);
+
+
+                                            //Ενημέρωση ιστορικού
+                                            //Δημιουργία id νέου ιστορικού
+                                            final String finalNewStringMedId = newStringMedicineId;
+                                            database.child("history").orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    for (final DataSnapshot histId : dataSnapshot.getChildren()) {
+                                                        String currentHistId = histId.getKey();
+                                                        currentHistId = currentHistId.substring(currentHistId.length() - 11);
+                                                        int newIntHistoryId = Integer.parseInt(currentHistId) + 1;
+
+                                                        //Βάζουμε τα απαραίτητα μηδενικά ώστε να υπακούει στο format του id
+                                                        String newStringHistoryId = String.valueOf(newIntHistoryId);
+
+                                                        String zeroes = "";
+                                                        switch (newStringHistoryId.length()) {
+                                                            case 1:
+                                                                zeroes += "0000000000";
+                                                                break;
+                                                            case 2:
+                                                                zeroes += "000000000";
+                                                                break;
+                                                            case 3:
+                                                                zeroes += "00000000";
+                                                                break;
+                                                            case 4:
+                                                                zeroes += "0000000";
+                                                                break;
+                                                            case 5:
+                                                                zeroes += "000000";
+                                                                break;
+                                                            case 6:
+                                                                zeroes += "00000";
+                                                                break;
+                                                            case 7:
+                                                                zeroes += "0000";
+                                                                break;
+                                                            case 8:
+                                                                zeroes += "000";
+                                                                break;
+                                                            case 9:
+                                                                zeroes += "00";
+                                                                break;
+                                                            case 10:
+                                                                zeroes += "0";
+                                                                break;
+
+                                                        }
+
+                                                        newStringHistoryId = "h" + zeroes + newStringHistoryId;
+
+                                                        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+                                                        String date = df.format(Calendar.getInstance().getTime());
+
+                                                        History newHistory = new History(newStringHistoryId,
+                                                                date,
+                                                                "medicines",
+                                                                newMedicine.getId(),
+                                                                currentUser.getName() + " " + currentUser.getSurname(),
+                                                                "create",
+                                                                newMedicine.getName() + "\n" + newMedicine.getDose() + "\n" + newMedicine.getFrequency()
+                                                        );
+
+
+                                                        //Εισαγωγή νέου ιστορικού στην βάση
+                                                        referenceDB.child("history")
+                                                                .child(newHistory.getId())
+                                                                .setValue(newHistory);
+
+                                                        referenceDB.child("history")
+                                                                .child(newHistory.getId())
+                                                                .child("type")
+                                                                .child("medicines")
+                                                                .setValue(finalNewStringMedId);
+
+                                                        referenceDB.child("history")
+                                                                .child(newHistory.getId())
+                                                                .child("patients")
+                                                                .child(patient.getId())
+                                                                .setValue(true);
+
+                                                        referenceDB.child("history")
+                                                                .child(newHistory.getId())
+                                                                .child("users")
+                                                                .child(userID)
+                                                                .setValue(true);
 
                                                     }
+                                                }
 
-                                                    newStringHistoryId ="h"+ zeroes + newStringHistoryId;
-
-                                                    DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-                                                    String date = df.format(Calendar.getInstance().getTime());
-
-                                                    History newHistory = new History(newStringHistoryId,
-                                                            date,
-                                                            "examinations",
-                                                            newMedicine.getId(),
-                                                            currentUser.getName() +" " + currentUser.getSurname(),
-                                                            "create"
-                                                    );
-
-
-                                                    //Εισαγωγή νέου ιστορικού στην βάση
-                                                    referenceDB.child("history")
-                                                            .child(newHistory.getId())
-                                                            .setValue(newHistory);
-
-                                                    referenceDB.child("history")
-                                                            .child(newHistory.getId())
-                                                            .child("type")
-                                                            .child("medicines")
-                                                            .setValue(finalNewStringMedId);
-
-                                                    referenceDB.child("history")
-                                                            .child(newHistory.getId())
-                                                            .child("patients")
-                                                            .child(patient.getId())
-                                                            .setValue(true);
-
-                                                    referenceDB.child("history")
-                                                            .child(newHistory.getId())
-                                                            .child("users")
-                                                            .child(userID)
-                                                            .setValue(true);
+                                                @Override
+                                                public void onCancelled(FirebaseError firebaseError) {
 
                                                 }
-                                            }
+                                            });
 
-                                            @Override
-                                            public void onCancelled(FirebaseError firebaseError) {
+                                        }
+                                        Toast.makeText(getActivity(), "Εισαγωγή φάρμακος επιτυχής!", Toast.LENGTH_LONG).show();
+                                        dialog.dismiss();
 
-                                            }
-                                        });
+                                        ((PatientsActivity) getActivity()).reloadCurrentFragment();
+                                    }
+
+                                    @Override
+                                    public void onCancelled(FirebaseError firebaseError) {
 
                                     }
-                                    Toast.makeText(getActivity(), "Εισαγωγή φάρμακος επιτυχής!", Toast.LENGTH_LONG).show();
-                                    dialog.dismiss();
+                                });
 
-                                    ((PatientsActivity)getActivity()).reloadCurrentFragment();
-                                }
-
-                                @Override
-                                public void onCancelled(FirebaseError firebaseError) {
-
-                                }
-                            });
-
+                            } else {
+                                Toast.makeText(getActivity(), "Μην αφήνετε πεδία κενά!", Toast.LENGTH_LONG).show();
+                            }
                         }
-                        else{
-                            Toast.makeText(getActivity(),"Μην αφήνετε πεδία κενά!",Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
+                    });
 
 
+                    dialog.show();
 
-
-                dialog.show();
-
+                }
+                else{
+                    Toast.makeText(getActivity(), "Μόνο γιατρός μπορεί να εισάγει φάρμακα!", Toast.LENGTH_LONG).show();
+                }
             }
+
         });
 
 
@@ -453,10 +459,12 @@ public class MedicinesFragment extends Fragment {
 
                                     History newHistory = new History(newStringHistoryId,
                                             date,
-                                            "examinations",
+                                            "medicines",
                                             medicineSelected.getId(),
                                             currentUser.getName() +" " + currentUser.getSurname(),
-                                            "delete"
+                                            "delete",
+                                            medicineSelected.getName() +"\n"+medicineSelected.getDose() +"\n" + medicineSelected.getFrequency()
+
                                     );
 
 

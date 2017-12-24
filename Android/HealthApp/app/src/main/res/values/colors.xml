@@ -5,4 +5,5 @@
     <color name="colorAccent">#f36666</color>
     <color name="foreground_material_light">#ffffff</color>
     <color name="pill">#228B22</color>
+    <color name="chatMsg">#8bdaff</color>
 </resources>

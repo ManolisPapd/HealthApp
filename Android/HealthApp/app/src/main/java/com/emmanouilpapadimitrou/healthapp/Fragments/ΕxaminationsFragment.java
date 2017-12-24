@@ -310,7 +310,8 @@ public class ΕxaminationsFragment extends Fragment {
                                                          "examinations",
                                                          newExamination.getId(),
                                                          currentUser.getName() +" " + currentUser.getSurname(),
-                                                         "create"
+                                                         "create",
+                                                         newExamination.getName()
                                                          );
 
 

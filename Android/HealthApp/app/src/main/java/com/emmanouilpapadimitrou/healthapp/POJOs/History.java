@@ -9,17 +9,19 @@ public class History {
     private String typeId;
     private String doctor;
     private String condition;
+    private String details;
 
     public History() {
     }
 
-    public History(String id, String date, String type, String typeId, String doctor, String condition) {
+    public History(String id, String date, String type, String typeId, String doctor, String condition, String details) {
         this.id = id;
         this.date = date;
         this.type = type;
         this.typeId = typeId;
         this.doctor = doctor;
         this.condition = condition;
+        this.details = details;
     }
 
     @Exclude
@@ -76,5 +78,13 @@ public class History {
 
     public void setCondition(String condition) {
         this.condition = condition;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
     }
 }
