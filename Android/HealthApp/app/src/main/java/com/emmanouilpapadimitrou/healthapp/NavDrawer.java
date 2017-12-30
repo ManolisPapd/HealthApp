@@ -10,13 +10,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.emmanouilpapadimitrou.healthapp.Activities.MainActivity;
 import com.emmanouilpapadimitrou.healthapp.Fragments.PatientsFragment;
 
-import com.firebase.client.Firebase;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
@@ -24,21 +24,20 @@ import com.google.firebase.database.FirebaseDatabase;
 public class NavDrawer extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private Firebase database;
+    private FirebaseDatabase database;
     private FirebaseAuth firebaseAuth;
-    private String userID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav_drawer);
 
-        //Ορισμός της βάσης με το αντικείμενο
-        Firebase.setAndroidContext(this);
+
 
         //Μεταβλητή που μας δίνει τα στοιχεία του συνδεδεμένου χρήστη
         firebaseAuth = FirebaseAuth.getInstance();
-        database = new Firebase("https://healthapp-f2bba.firebaseio.com/");
+        database = FirebaseDatabase.getInstance();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -51,7 +50,6 @@ public class NavDrawer extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
 
 
 

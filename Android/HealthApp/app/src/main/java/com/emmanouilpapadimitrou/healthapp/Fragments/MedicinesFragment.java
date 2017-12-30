@@ -21,13 +21,12 @@ import com.emmanouilpapadimitrou.healthapp.POJOs.Patient;
 import com.emmanouilpapadimitrou.healthapp.POJOs.Users;
 import com.emmanouilpapadimitrou.healthapp.Activities.PatientsActivity;
 import com.emmanouilpapadimitrou.healthapp.R;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -38,7 +37,6 @@ import java.util.Calendar;
 public class MedicinesFragment extends Fragment {
     private String userID;
     private FirebaseAuth firebaseAuth;
-    private Firebase database;
     private ListView medicinesList;
     private ArrayList<Medicine> allMedicines;
     private FloatingActionButton addMedicineBtn;
@@ -68,7 +66,6 @@ public class MedicinesFragment extends Fragment {
         userID = firebaseAuth.getCurrentUser().getUid();
 
         //Ορισμός της βάσης στην μεταβλητή για οποιαδήποτε μελλοντική χρήστη
-        database = new Firebase("https://healthapp-f2bba.firebaseio.com/");
         referenceDB =  FirebaseDatabase.getInstance().getReference();
 
         //Σύνδεση μεταβλητής με την λίστα στο layout
@@ -78,7 +75,7 @@ public class MedicinesFragment extends Fragment {
         patient = ((PatientsActivity)getActivity()).getCurrentPatient();
 
         //Παίρνουμε όλα τα φάρμακα από την βάση
-        database.child("medicines").addListenerForSingleValueEvent(new ValueEventListener() {
+        referenceDB.child("medicines").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
                 for(final DataSnapshot medicine : dataSnapshot.getChildren()){
@@ -88,7 +85,7 @@ public class MedicinesFragment extends Fragment {
                         //Θα βρούμε το όνομα του γιατρού από το id
                         final String docID = String.valueOf(medicineChild.getKey());
 
-                        database.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                        referenceDB.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot1) {
                                 for(DataSnapshot doctorTemp : dataSnapshot1.getChildren()){
@@ -125,9 +122,11 @@ public class MedicinesFragment extends Fragment {
                             }
 
                             @Override
-                            public void onCancelled(FirebaseError firebaseError) {
+                            public void onCancelled(DatabaseError databaseError) {
 
                             }
+
+
                         });
                     }
 
@@ -136,9 +135,10 @@ public class MedicinesFragment extends Fragment {
             }
 
             @Override
-            public void onCancelled(FirebaseError firebaseError) {
+            public void onCancelled(DatabaseError databaseError) {
 
             }
+
         });
 
 
@@ -178,7 +178,7 @@ public class MedicinesFragment extends Fragment {
 
 
                                 //Βρίσκουμε πόσα φάρμακα υπάρχουν στην βάση ώστε να φτιάξουμε το νέο id για το φάρμακο
-                                database.child("medicines").orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+                                referenceDB.child("medicines").orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         for (final DataSnapshot medTmp : dataSnapshot.getChildren()) {
@@ -244,7 +244,7 @@ public class MedicinesFragment extends Fragment {
                                             //Ενημέρωση ιστορικού
                                             //Δημιουργία id νέου ιστορικού
                                             final String finalNewStringMedId = newStringMedicineId;
-                                            database.child("history").orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+                                            referenceDB.child("history").orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
                                                 @Override
                                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                                     for (final DataSnapshot histId : dataSnapshot.getChildren()) {
@@ -332,9 +332,11 @@ public class MedicinesFragment extends Fragment {
                                                 }
 
                                                 @Override
-                                                public void onCancelled(FirebaseError firebaseError) {
+                                                public void onCancelled(DatabaseError databaseError) {
 
                                                 }
+
+
                                             });
 
                                         }
@@ -345,9 +347,11 @@ public class MedicinesFragment extends Fragment {
                                     }
 
                                     @Override
-                                    public void onCancelled(FirebaseError firebaseError) {
+                                    public void onCancelled(DatabaseError databaseError) {
 
                                     }
+
+
                                 });
 
                             } else {
@@ -401,12 +405,12 @@ public class MedicinesFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         //Διαγραφή από το πεδίο medicines
-                        database.child("medicines").child(medicineSelected.getId()).removeValue();
+                        referenceDB.child("medicines").child(medicineSelected.getId()).removeValue();
 
                         //Ενημέρωση ιστορικού
                         //Δημιουργία id νέου ιστορικού
 
-                        database.child("history").orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+                        referenceDB.child("history").orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 for(final DataSnapshot histId : dataSnapshot.getChildren()) {
@@ -495,9 +499,11 @@ public class MedicinesFragment extends Fragment {
                             }
 
                             @Override
-                            public void onCancelled(FirebaseError firebaseError) {
+                            public void onCancelled(DatabaseError databaseError) {
 
                             }
+
+
                         });
 
 

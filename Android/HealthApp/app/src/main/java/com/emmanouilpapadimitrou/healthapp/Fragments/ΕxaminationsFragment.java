@@ -26,15 +26,14 @@ import com.emmanouilpapadimitrou.healthapp.POJOs.Patient;
 import com.emmanouilpapadimitrou.healthapp.POJOs.Users;
 import com.emmanouilpapadimitrou.healthapp.Activities.PatientsActivity;
 import com.emmanouilpapadimitrou.healthapp.R;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -51,7 +50,6 @@ public class ΕxaminationsFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
     private String userID;
     private DatabaseReference referenceDB;
-    private Firebase database;
     private ListView examinationsList;
     private FloatingActionButton addExaminationsBtn;
     private Users currentUser;
@@ -80,7 +78,6 @@ public class ΕxaminationsFragment extends Fragment {
 
 
         //Ορισμός της βάσης στην μεταβλητή για οποιαδήποτε μελλοντική χρήστη
-        database = new Firebase("https://healthapp-f2bba.firebaseio.com/");
         referenceDB =  FirebaseDatabase.getInstance().getReference();
 
         //Σύνδεση μεταβλητής με την λίστα στο layout
@@ -90,7 +87,7 @@ public class ΕxaminationsFragment extends Fragment {
         final Patient patient = ((PatientsActivity)getActivity()).getCurrentPatient();
 
         //Παίρνουμε όλες τις εξετάσεις από την βάση
-        database.child("examinations").addListenerForSingleValueEvent(new ValueEventListener() {
+        referenceDB.child("examinations").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(final DataSnapshot examination : dataSnapshot.getChildren()){
@@ -100,7 +97,7 @@ public class ΕxaminationsFragment extends Fragment {
                         //Θα βρούμε το όνομα του γιατρού από το id
                         final String docID = String.valueOf(examinationChild.getKey());
 
-                        database.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                        referenceDB.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot1) {
                                 for(DataSnapshot doctorTemp : dataSnapshot1.getChildren()){
@@ -133,9 +130,11 @@ public class ΕxaminationsFragment extends Fragment {
                             }
 
                             @Override
-                            public void onCancelled(FirebaseError firebaseError) {
+                            public void onCancelled(DatabaseError databaseError) {
 
                             }
+
+
                         });
                     }
 
@@ -143,9 +142,10 @@ public class ΕxaminationsFragment extends Fragment {
             }
 
             @Override
-            public void onCancelled(FirebaseError firebaseError) {
+            public void onCancelled(DatabaseError databaseError) {
 
             }
+
         });
 
 
@@ -195,7 +195,7 @@ public class ΕxaminationsFragment extends Fragment {
                        //Ελέγχουμε αν είναι άδειο τα πεδίο
                        if(!examinationInputName.getText().toString().isEmpty()){
                            //Βρίσκουμε πόσες εξετάσεις υπάρχουν στην βάση ώστε να φτιάξουμε το νέο id για την εξέταση
-                           database.child("examinations").orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+                           referenceDB.child("examinations").orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
                              @Override
                              public void onDataChange(DataSnapshot dataSnapshot) {
                                  for(final DataSnapshot examTmp : dataSnapshot.getChildren()){
@@ -254,7 +254,7 @@ public class ΕxaminationsFragment extends Fragment {
                                      //Ενημέρωση ιστορικού
                                      //Δημιουργία id νέου ιστορικού
                                      final String finalNewStringExamId = newStringExamId;
-                                     database.child("history").orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+                                     referenceDB.child("history").orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
                                          @Override
                                          public void onDataChange(DataSnapshot dataSnapshot) {
                                              for(final DataSnapshot histId : dataSnapshot.getChildren()) {
@@ -342,7 +342,7 @@ public class ΕxaminationsFragment extends Fragment {
                                          }
 
                                          @Override
-                                         public void onCancelled(FirebaseError firebaseError) {
+                                         public void onCancelled(DatabaseError databaseError) {
 
                                          }
                                      });
@@ -357,10 +357,12 @@ public class ΕxaminationsFragment extends Fragment {
                                  ((PatientsActivity)getActivity()).reloadCurrentFragment();
                              }
 
-                             @Override
-                             public void onCancelled(FirebaseError firebaseError) {
+                               @Override
+                               public void onCancelled(DatabaseError databaseError) {
 
-                             }
+                               }
+
+
                          });
 
 

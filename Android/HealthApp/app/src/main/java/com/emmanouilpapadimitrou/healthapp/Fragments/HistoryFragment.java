@@ -19,13 +19,12 @@ import com.emmanouilpapadimitrou.healthapp.Adapters.ExaminationsAdapter;
 import com.emmanouilpapadimitrou.healthapp.Adapters.HistoryAdapter;
 import com.emmanouilpapadimitrou.healthapp.POJOs.*;
 import com.emmanouilpapadimitrou.healthapp.R;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
@@ -37,7 +36,6 @@ public class HistoryFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
     private String userID;
     private DatabaseReference referenceDB;
-    private Firebase database;
     private ListView historyList;
     private Users currentUser;
 
@@ -63,7 +61,6 @@ public class HistoryFragment extends Fragment {
 
 
         //Ορισμός της βάσης στην μεταβλητή για οποιαδήποτε μελλοντική χρήστη
-        database = new Firebase("https://healthapp-f2bba.firebaseio.com/");
         referenceDB =  FirebaseDatabase.getInstance().getReference();
 
         //Σύνδεση μεταβλητής με την λίστα στο layout
@@ -73,7 +70,7 @@ public class HistoryFragment extends Fragment {
         final Patient patient = ((PatientsActivity)getActivity()).getCurrentPatient();
 
         //Παίρνουμε όλες τις εξετάσεις από την βάση
-        database.child("history").addListenerForSingleValueEvent(new ValueEventListener() {
+        referenceDB.child("history").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(final DataSnapshot history : dataSnapshot.getChildren()){
@@ -83,7 +80,7 @@ public class HistoryFragment extends Fragment {
                         //Θα βρούμε το όνομα του γιατρού από το id
                         final String docID = String.valueOf(historyChild.getKey());
 
-                        database.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                        referenceDB.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot1) {
                                 for(DataSnapshot userTemp : dataSnapshot1.getChildren()){
@@ -134,9 +131,11 @@ public class HistoryFragment extends Fragment {
                             }
 
                             @Override
-                            public void onCancelled(FirebaseError firebaseError) {
+                            public void onCancelled(DatabaseError databaseError) {
 
                             }
+
+
                         });
                     }
 
@@ -144,9 +143,11 @@ public class HistoryFragment extends Fragment {
             }
 
             @Override
-            public void onCancelled(FirebaseError firebaseError) {
+            public void onCancelled(DatabaseError databaseError) {
 
             }
+
+
         });
 
 
@@ -170,7 +171,7 @@ public class HistoryFragment extends Fragment {
                 Button denyButton = (Button) mView.findViewById(R.id.denyButton);
 
                 //Παίρνουμε τις λεπτομέρειες του επιλεγμένου ιστορικού
-                database.child("history").addListenerForSingleValueEvent(new ValueEventListener() {
+                referenceDB.child("history").addListenerForSingleValueEvent(new ValueEventListener() {
                    @Override
                    public void onDataChange(DataSnapshot dataSnapshot) {
                        for(final DataSnapshot history : dataSnapshot.getChildren()){
@@ -183,11 +184,13 @@ public class HistoryFragment extends Fragment {
                        }
                    }
 
-                   @Override
-                   public void onCancelled(FirebaseError firebaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                   }
-               });
+                    }
+
+
+                });
 
 
                         //Κουμπί για πίσω

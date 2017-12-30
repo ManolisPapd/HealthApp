@@ -22,13 +22,12 @@ import com.emmanouilpapadimitrou.healthapp.Activities.PatientsActivity;
 import com.emmanouilpapadimitrou.healthapp.Adapters.NotesAdapter;
 import com.emmanouilpapadimitrou.healthapp.POJOs.*;
 import com.emmanouilpapadimitrou.healthapp.R;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -41,7 +40,6 @@ public class NotesFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
     private String userID;
     private DatabaseReference referenceDB;
-    private Firebase database;
     private ListView notesList;
     private FloatingActionButton addNotesBtn;
     private Users currentUser;
@@ -66,7 +64,6 @@ public class NotesFragment extends Fragment {
 
 
         //Ορισμός της βάσης στην μεταβλητή για οποιαδήποτε μελλοντική χρήστη
-        database = new Firebase("https://healthapp-f2bba.firebaseio.com/");
         referenceDB =  FirebaseDatabase.getInstance().getReference();
 
         //Σύνδεση μεταβλητής με την λίστα στο layout
@@ -76,7 +73,7 @@ public class NotesFragment extends Fragment {
         final Patient patient = ((PatientsActivity)getActivity()).getCurrentPatient();
 
         //Παίρνουμε όλες τις σημειώσεις από την βάση
-        database.child("notes").addListenerForSingleValueEvent(new ValueEventListener() {
+        referenceDB.child("notes").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(final DataSnapshot note : dataSnapshot.getChildren()){
@@ -86,7 +83,7 @@ public class NotesFragment extends Fragment {
                         //Θα βρούμε το όνομα του χρήστη από το id
                         final String userID = String.valueOf(noteChild.getKey());
 
-                        database.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                        referenceDB.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot1) {
                                 for(DataSnapshot userTemp : dataSnapshot1.getChildren()){
@@ -124,9 +121,11 @@ public class NotesFragment extends Fragment {
                             }
 
                             @Override
-                            public void onCancelled(FirebaseError firebaseError) {
+                            public void onCancelled(DatabaseError databaseError) {
 
                             }
+
+
                         });
 
 
@@ -135,9 +134,11 @@ public class NotesFragment extends Fragment {
             }
 
             @Override
-            public void onCancelled(FirebaseError firebaseError) {
+            public void onCancelled(DatabaseError databaseError) {
 
             }
+
+
         });
 
 
@@ -182,7 +183,7 @@ public class NotesFragment extends Fragment {
 
                        //Ελέγχουμε αν είναι άδειο τα πεδίο
                        if(!noteInput.getText().toString().isEmpty()){
-                           database.child("notes").orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+                           referenceDB.child("notes").orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
                                @Override
                                public void onDataChange(DataSnapshot dataSnapshot) {
                                    for(final DataSnapshot noteTmp : dataSnapshot.getChildren()){
@@ -241,7 +242,7 @@ public class NotesFragment extends Fragment {
                                        //Ενημέρωση ιστορικού
                                        //Δημιουργία id νέου ιστορικού
                                        final String finalNewStringNoteId = newStringNoteId;
-                                       database.child("history").orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+                                       referenceDB.child("history").orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
                                            @Override
                                            public void onDataChange(DataSnapshot dataSnapshot) {
                                                for(final DataSnapshot histId : dataSnapshot.getChildren()) {
@@ -329,9 +330,11 @@ public class NotesFragment extends Fragment {
                                            }
 
                                            @Override
-                                           public void onCancelled(FirebaseError firebaseError) {
+                                           public void onCancelled(DatabaseError databaseError) {
 
                                            }
+
+
                                        });
 
                                    }
@@ -341,9 +344,10 @@ public class NotesFragment extends Fragment {
                                }
 
                                @Override
-                               public void onCancelled(FirebaseError firebaseError) {
+                               public void onCancelled(DatabaseError databaseError) {
 
                                }
+
                            });
                        }
                        else{
@@ -399,11 +403,11 @@ public class NotesFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         //Διαγραφή από το πεδίο medicines
-                        database.child("notes").child(noteSelected.getId()).removeValue();
+                        referenceDB.child("notes").child(noteSelected.getId()).removeValue();
 
                         //Ενημέρωση ιστορικού
                         //Δημιουργία id νέου ιστορικού
-                        database.child("history").orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+                        referenceDB.child("history").orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 Log.d("TEST","mpike");
@@ -492,9 +496,11 @@ public class NotesFragment extends Fragment {
                             }
 
                             @Override
-                            public void onCancelled(FirebaseError firebaseError) {
+                            public void onCancelled(DatabaseError databaseError) {
 
                             }
+
+
                         });
 
                         Toast.makeText(getActivity(),"Επιτυχής διαγραφή!",Toast.LENGTH_LONG).show();

@@ -12,8 +12,8 @@ import com.emmanouilpapadimitrou.healthapp.Fragments.*;
 import com.emmanouilpapadimitrou.healthapp.POJOs.Patient;
 import com.emmanouilpapadimitrou.healthapp.POJOs.Users;
 import com.emmanouilpapadimitrou.healthapp.R;
-import com.firebase.client.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -27,7 +27,7 @@ public class PatientsActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private String userID;
     private Users currentUser;
-    private Firebase database;
+    private FirebaseDatabase database;
 
 
     @Override
@@ -48,9 +48,8 @@ public class PatientsActivity extends AppCompatActivity {
         //Μεταβλητή που μας δίνει τα στοιχεία του συνδεδεμένου χρήστη
         firebaseAuth = FirebaseAuth.getInstance();
 
-        database = new Firebase("https://healthapp-f2bba.firebaseio.com/");
+        database = FirebaseDatabase.getInstance();
 
-        //TODO kanto sto PatientsFragment kai steilto me parceable
 
 
 

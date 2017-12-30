@@ -16,11 +16,12 @@ import com.emmanouilpapadimitrou.healthapp.POJOs.Patient;
 import com.emmanouilpapadimitrou.healthapp.POJOs.Users;
 import com.emmanouilpapadimitrou.healthapp.Activities.PatientsActivity;
 import com.emmanouilpapadimitrou.healthapp.R;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,7 +38,7 @@ public class PatientsFragment extends Fragment {
     private String userID;
     private ArrayList<String> patientsID;
     private ArrayList<Patient> allPatients;
-    private Firebase database;
+    private DatabaseReference referenceDB;
     private ArrayList<String> patientNames;
     private ArrayAdapter<String> listViewAdapter;
     private FirebaseAuth firebaseAuth;
@@ -59,7 +60,7 @@ public class PatientsFragment extends Fragment {
         userID = firebaseAuth.getCurrentUser().getUid();
 
         //Ορισμός της βάσης στην μεταβλητή για οποιαδήποτε μελλοντική χρήστη
-        database = new Firebase("https://healthapp-f2bba.firebaseio.com/");
+        referenceDB =  FirebaseDatabase.getInstance().getReference();
         patientNames = new ArrayList<>();
         listViewAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,patientNames);
 
@@ -71,7 +72,7 @@ public class PatientsFragment extends Fragment {
         final HashMap<String,String> patientInfoForList = new HashMap<>();
 
         //Παίρνουμε όλους τους ασθενείς από την βάση
-        database.child("patients").addListenerForSingleValueEvent(new ValueEventListener() {
+        referenceDB.child("patients").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot patient : dataSnapshot.getChildren()){
@@ -145,7 +146,7 @@ public class PatientsFragment extends Fragment {
                             if(value.equals(tempPatient.getId())){
                                 //Δημιουργία object του τρέχοντος χρήστη ώστε να χρησιμοποιείται εύκολα στην υπόλοιπη εφαρμογή
                                 userID = firebaseAuth.getCurrentUser().getUid();
-                                database.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                                referenceDB.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         for(DataSnapshot doctorTemp : dataSnapshot.getChildren()){
@@ -173,9 +174,11 @@ public class PatientsFragment extends Fragment {
                                     }
 
                                     @Override
-                                    public void onCancelled(FirebaseError firebaseError) {
+                                    public void onCancelled(DatabaseError databaseError) {
 
                                     }
+
+
                                 });
 
                                 break;
@@ -192,9 +195,11 @@ public class PatientsFragment extends Fragment {
             }
 
             @Override
-            public void onCancelled(FirebaseError firebaseError) {
+            public void onCancelled(DatabaseError databaseError) {
 
             }
+
+
         });
 
 

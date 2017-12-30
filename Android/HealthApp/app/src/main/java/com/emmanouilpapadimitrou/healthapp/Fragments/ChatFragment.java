@@ -20,7 +20,6 @@ import com.emmanouilpapadimitrou.healthapp.POJOs.Message;
 import com.emmanouilpapadimitrou.healthapp.POJOs.Patient;
 import com.emmanouilpapadimitrou.healthapp.POJOs.Users;
 import com.emmanouilpapadimitrou.healthapp.R;
-import com.firebase.client.Firebase;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -43,7 +42,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
 
     private FirebaseUser fUser;
     private FirebaseAuth firebaseAuth;
-    private Firebase database;
+    private FirebaseDatabase database;
     private DatabaseReference referenceDB;
     private DatabaseReference usersDB;
     private Patient patient;
@@ -68,7 +67,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         patient = ((PatientsActivity)getActivity()).getCurrentPatient();
 
         //Ορισμός της βάσης στην μεταβλητή για οποιαδήποτε μελλοντική χρήστη
-        database = new Firebase("https://healthapp-f2bba.firebaseio.com/");
+        database = FirebaseDatabase.getInstance();
         referenceDB =  FirebaseDatabase.getInstance().getReference().child("messages").child(patient.getId());
 
 
