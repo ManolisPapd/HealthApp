@@ -20,6 +20,7 @@ The application respects the patient's personal data and is therefore exclusivel
 
 
 
+
 Main Functionality Analysis:
 * The home fragment will contain the patient's basic information:
 
